@@ -1,58 +1,58 @@
-# Augmented Random Search (ARS)
+# 확장 랜덤 탐색 (ARS)
 
-ARS is a random search method for training linear policies for continuous control problems, based on the paper ["Simple random search provides a competitive approach to reinforcement learning."](https://arxiv.org/abs/1803.07055) 
+ARS는 연속적인 제어 문제에 대한 선형 정책을 학습하는 랜덤 탐색 방법입니다. ARS는 다음 논문에 소개되어 있습니다. ["Simple random search provides a competitive approach to reinforcement learning."](https://arxiv.org/abs/1803.07055) 
 
-## Prerequisites for running ARS
+## ARS를 위한 필수 구성 요소
 
-Our ARS implementation relies on Python 3, OpenAI Gym version 0.9.3, mujoco-py 0.5.7, MuJoCo Pro version 1.31, and the Ray library for parallel computing.  
+ARS 실행을 위해서는 파이썬 3, OpenAI Gym 버전 0.9.3, mujoco-py 0.5.7, MuJoCo Pro 버전 1.31, 그리고 병렬 컴퓨팅을 위한 Ray library 가 필요합니다.
 
-To install OpenAI Gym and MuJoCo dependencies follow the instructions here:
+OpenAI Gym과 MuJoCo dependencies를 설치하려면 다음의 링크를 따라하면 됩니다:
 https://github.com/openai/gym
 
-To install Ray execute:
+Ray execute 설치를 위해서는 다음을 입력하면 됩니다:
 ``` 
 pip install ray
 ```
-For more information on Ray see http://ray.readthedocs.io/en/latest/. 
+Ray에 대해 더 알고 싶다면 다음의 링크를 읽어보세요: http://ray.readthedocs.io/en/latest/. 
 
-## Running ARS
+## ARS 실행
 
-First start Ray by executing a command of the following form:
+먼저 아래의 명령어를 이용하여 Ray를 실행합니다:
 
 ```
 ray start --head --redis-port=6379 --num-workers=18
 ```
-This command starts multiple Python processes on one machine for parallel computations with Ray. 
-Set "num_workers=X" for parallelizing ARS across X CPUs.
-For parallelzing ARS on a cluster follow the instructions here: http://ray.readthedocs.io/en/latest/using-ray-on-a-large-cluster.html.
+이 명령어는 Ray를 이용한 병렬 컴퓨팅을 실행하기 위해 하나의 장치에서 여러 파이썬 프로세스를 실행시킵니다.
+"num_workers=X" 에서 X는 몇 개의 CPU에 대해서 ARS 병렬 연산을 실행할 것인지를 의미합니다.
+군집에서 ARS를 병렬 연산하기 위해서는 다음 링크를 참고하면 됩니다: http://ray.readthedocs.io/en/latest/using-ray-on-a-large-cluster.html.
 
-We recommend using single threaded linear algebra computations by setting: 
+아래의 명령어를 실행해 단일 스레드 선형 대수 연산을 실행하는 것을 권장합니다:
 ```
 export MKL_NUM_THREADS=1
 ```
 
-To train a policy for HalfCheetah-v1, execute the following command: 
+HalfCheetah-v1 문제의 정책을 학습하기 위해서는 아래의 명령어를 실행하면 됩니다:
 
 ```
 python code/ars.py
 ```
 
-All arguments passed into ARS are optional and can be modified to train other environments, use different hyperparameters, or use  different random seeds.
-For example, to train a policy for Humanoid-v1, execute the following command:
+ARS에 입력하는 모든 인수들은 선택사항이며, 다른 환경에 대해 학습하거나 다른 하이퍼파라미터를 사용하거나 다른 무작위 시드를 사용할 때마다 바꾸어 사용할 수 있습니다.
+예를 들어, Humanoid-v1 문제의 정책을 학습할 때에는 다음의 명령어를 실행합니다:
 
 ```
 python code/ars.py --env_name Humanoid-v1 --n_directions 230 --deltas_used 230 --step_size 0.02 --delta_std 0.0075 --n_workers 48 --shift 5
 ```
 
-## Rendering Trained Policy
+## 학습한 정책 렌더링하기
 
-To render a trained policy, execute a command of the following form:
+학습한 정책을 렌더링하기 위해서는 다음의 명령어를 실행합니다:
 
 ```
 python code/run_policy.py trained_polices/env_name/policy_directory_path/policy_file_name.npz env_name --render
 ```
 
-For example, to render Humanoid-v1 with a galloping gait execute:
+예를 들어, galloping gait를 포함한 Humanoid-v1를 렌더링하기 위해서는 다음의 명령어를 실행합니다:
 
 ```
 python code/run_policy.py trained_policies/Humanoid-v1/policy_reward_11600/lin_policy_plus.npz Humanoid-v1 --render 
