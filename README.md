@@ -9,7 +9,7 @@ ARS 실행을 위해서는 파이썬 3, OpenAI Gym 버전 0.9.3, mujoco-py 0.5.7
 OpenAI Gym과 MuJoCo dependencies를 설치하려면 다음의 링크를 따라하면 됩니다:
 https://github.com/openai/gym
 
-Ray execute 설치를 위해서는 다음을 입력하면 됩니다:
+Ray를 설치하기 위해서는 다음을 입력하면 됩니다:
 ``` 
 pip install ray
 ```
@@ -24,7 +24,7 @@ ray start --head --redis-port=6379 --num-workers=18
 ```
 이 명령어는 Ray를 이용한 병렬 컴퓨팅을 실행하기 위해 하나의 장치에서 여러 파이썬 프로세스를 실행시킵니다.
 "num_workers=X" 에서 X는 몇 개의 CPU에 대해서 ARS 병렬 연산을 실행할 것인지를 의미합니다.
-군집에서 ARS를 병렬 연산하기 위해서는 다음 링크를 참고하면 됩니다: http://ray.readthedocs.io/en/latest/using-ray-on-a-large-cluster.html.
+클러스터에서 ARS를 병렬 연산하기 위해서는 다음 링크를 참고하면 됩니다: http://ray.readthedocs.io/en/latest/using-ray-on-a-large-cluster.html.
 
 아래의 명령어를 실행해 단일 스레드 선형 대수 연산을 실행하는 것을 권장합니다:
 ```
